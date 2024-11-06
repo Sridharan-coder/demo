@@ -151,7 +151,7 @@ function App() {
       for (let j = 2; j >= 0; j--) {
         if (numberGrid[i][j] === 0) {
           for (let k = j; k < 3; k++) {
-            numberGrid[i][k] = numberGrid[i][k+1]
+            numberGrid[i][k] = numberGrid[i][k + 1]
             numberGrid[i][k + 1] = 0
           }
           // numberGrid[numberGrid.length - 1][j] = 0;
@@ -172,11 +172,11 @@ function App() {
 
   const rightArrow = () => {
     setMoves(moves + 1)
-    for (let i = numberGrid.length-1; i >= 0; i--) {
+    for (let i = numberGrid.length - 1; i >= 0; i--) {
       for (let j = 1; j < 4; j++) {
         if (numberGrid[i][j] === 0) {
           for (let k = j; k >= 0; k--) {
-            numberGrid[i][k] = numberGrid[i][k-1]
+            numberGrid[i][k] = numberGrid[i][k - 1]
             numberGrid[i][k - 1] = 0
           }
           // numberGrid[numberGrid.length - 1][j] = 0;
@@ -193,6 +193,27 @@ function App() {
     const newOne = createData();
     numberGrid[newOne[0]][newOne[1]] = 2;
     SetGrid(numberGrid)
+  }
+
+  document.onkeydown = function (event) {
+    console.log(event.key);
+    switch (event.key) {
+      case "ArrowLeft":
+        leftArrow()
+        break;
+      case "ArrowUp":
+        upArrow()
+        break;
+      case "ArrowRight":
+        rightArrow();
+        break;
+      case "ArrowDown":
+        downArrow();
+        break;
+      default:
+        break;
+    }
+
   }
 
   const newGame = () => {
@@ -218,23 +239,19 @@ function App() {
     newGame();
   }, [])
 
+
   return (
     <>
       <p>Score : {score}</p>
       <p>Moves : {moves}</p>
-      <svg width={576} height={576} viewBox='-100 -100 676 676' xmlns="http://www.w3.org/2000/svg">
+      <button onClick={()=> newGame()}>New Game</button>
+      <svg width={576} height={576} viewBox='-100 -100 676 676' xmlns="http://www.w3.org/2000/svg" >
         <g>
-
           <rect width="492" height="492" rx="10" fill='#9c8979' />
         </g>
         {positiongrid.map((i) => defaultlayout(i))}
         {positiongrid.map((numX) => updatedLayout(numX, positiongrid.indexOf(numX)))}
       </svg>
-      <button onClick={() => upArrow()}>hi</button>
-      <button onClick={() => downArrow()}>bye</button>
-      <button onClick={() => leftArrow()}>bye</button>
-      <button onClick={() => rightArrow()}>bye</button>
-      <>{numberGrid}</>
     </>
   );
 }
