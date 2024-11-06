@@ -13,10 +13,11 @@ function App() {
   ])
   const [score, SetScore] = useState(0)
   const [moves, setMoves] = useState(0)
+  
 
   const positiongrid = [14, 132, 250, 368]
 
-  const numberGrid = Grid
+  let numberGrid = Grid
 
   const defaultlayout = (i) => {
     const temp = []
@@ -86,13 +87,33 @@ function App() {
     return temp;
   }
 
+  const createDataRandom = (positionChoosing) => {
+    return Math.floor(Math.random() * positionChoosing.length)
+  }
+
   const createData = () => {
-    let randomInt1 = Math.floor(Math.random() * 4);
+    const positionChoosing = []
 
-    let randomInt2 = Math.floor(Math.random() * 4);
-    console.log(randomInt1, randomInt2);
+    for (let i = 0; i < numberGrid.length; i++) {
+      for (let j = 0; j < numberGrid.length; j++) {
+        if (numberGrid[i][j] === 0)
+          positionChoosing.push(`${i} ${j}`)
+      }
+    }
+    let random;
+    let randomArray;
+    if (positionChoosing.length) {
+      random = positionChoosing[createDataRandom(positionChoosing)];
+      randomArray = random.split(" ")
+      randomArray[0] = Number(randomArray[0])
+      randomArray[1] = Number(randomArray[1])
+      return randomArray;
+    }
+    else {
+      alert("new Game")
+      newGame()
+    }
 
-    return [randomInt1, randomInt2]
   }
 
   const upArrow = () => {
@@ -110,13 +131,13 @@ function App() {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i + 1][j];
           numberGrid[i + 1][j] = 0;
           SetScore(score + numberGrid[i][j])
-
         }
       }
     }
     console.log(numberGrid);
     const newOne = createData();
-    numberGrid[newOne[0]][newOne[1]] = 2;
+    if (newOne)
+      numberGrid[newOne[0]][newOne[1]] = 2;
     SetGrid(numberGrid)
   }
 
@@ -134,14 +155,15 @@ function App() {
         else if (numberGrid[i][j] === numberGrid[i - 1][j]) {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i - 1][j];
           numberGrid[i - 1][j] = 0;
-          SetScore(numberGrid[i][j])
+          SetScore(score + numberGrid[i][j])
 
         }
       }
     }
     console.log(numberGrid);
     const newOne = createData();
-    numberGrid[newOne[0]][newOne[1]] = 2;
+    if (newOne)
+      numberGrid[newOne[0]][newOne[1]] = 2;
     SetGrid(numberGrid)
   }
 
@@ -166,7 +188,8 @@ function App() {
     }
     console.log(numberGrid);
     const newOne = createData();
-    numberGrid[newOne[0]][newOne[1]] = 2;
+    if (newOne)
+      numberGrid[newOne[0]][newOne[1]] = 2;
     SetGrid(numberGrid)
   }
 
@@ -175,9 +198,14 @@ function App() {
     for (let i = numberGrid.length - 1; i >= 0; i--) {
       for (let j = 1; j < 4; j++) {
         if (numberGrid[i][j] === 0) {
-          for (let k = j; k >= 0; k--) {
+          console.log(numberGrid[i][j - 1]);
+
+          for (let k = j; k > 0; k--) {
+            console.log(k - 1, `<-----------${k}`)
+            console.log(numberGrid[i][k], "------]", numberGrid[i][k - 1]);
             numberGrid[i][k] = numberGrid[i][k - 1]
             numberGrid[i][k - 1] = 0
+            // break;
           }
           // numberGrid[numberGrid.length - 1][j] = 0;
         }
@@ -185,13 +213,15 @@ function App() {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i][j - 1];
           numberGrid[i][j - 1] = 0;
           SetScore(score + numberGrid[i][j])
+          console.log(numberGrid[i][j]);
 
         }
       }
     }
     console.log(numberGrid);
     const newOne = createData();
-    numberGrid[newOne[0]][newOne[1]] = 2;
+    if (newOne)
+      numberGrid[newOne[0]][newOne[1]] = 2;
     SetGrid(numberGrid)
   }
 
@@ -217,6 +247,17 @@ function App() {
   }
 
   const newGame = () => {
+    const temp = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]
+
+    numberGrid = temp
+    SetGrid(numberGrid)
+    setMoves(0)
+    SetScore(0)
     let one = createData();
     let two = createData();
     if (one[1] === two[1] && one[0] === two[0]) {
@@ -229,13 +270,10 @@ function App() {
     }
     numberGrid[one[0]][one[1]] = 2
     numberGrid[two[0]][two[1]] = 2
-    SetGrid([...numberGrid])
-
+    SetGrid(numberGrid)
   }
 
   useEffect(() => {
-    console.log(numberGrid);
-
     newGame();
   }, [])
 
@@ -244,7 +282,7 @@ function App() {
     <>
       <p>Score : {score}</p>
       <p>Moves : {moves}</p>
-      <button onClick={()=> newGame()}>New Game</button>
+      <button onClick={() => newGame()}>New Game</button>
       <svg width={576} height={576} viewBox='-100 -100 676 676' xmlns="http://www.w3.org/2000/svg" >
         <g>
           <rect width="492" height="492" rx="10" fill='#9c8979' />
