@@ -13,7 +13,7 @@ function App() {
   ])
   const [score, SetScore] = useState(0)
   const [moves, setMoves] = useState(0)
-  
+  const [highScore,setHighScore]=useState(0)
 
   const positiongrid = [14, 132, 250, 368]
 
@@ -257,6 +257,7 @@ function App() {
     numberGrid = temp
     SetGrid(numberGrid)
     setMoves(0)
+    setHighScore(highScore<score?score:highScore)
     SetScore(0)
     let one = createData();
     let two = createData();
@@ -282,6 +283,7 @@ function App() {
     <>
       <p>Score : {score}</p>
       <p>Moves : {moves}</p>
+      <p>High Score : {highScore}</p>
       <button onClick={() => newGame()}>New Game</button>
       <svg width={576} height={576} viewBox='-100 -100 676 676' xmlns="http://www.w3.org/2000/svg" >
         <g>
