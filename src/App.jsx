@@ -13,7 +13,7 @@ function App() {
   ])
   const [score, SetScore] = useState(0)
   const [moves, setMoves] = useState(0)
-  const [highScore,setHighScore]=useState(0)
+  const [highScore, setHighScore] = useState(0)
 
   const positiongrid = [14, 132, 250, 368]
 
@@ -131,6 +131,7 @@ function App() {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i + 1][j];
           numberGrid[i + 1][j] = 0;
           SetScore(score + numberGrid[i][j])
+          j--;
         }
       }
     }
@@ -156,7 +157,7 @@ function App() {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i - 1][j];
           numberGrid[i - 1][j] = 0;
           SetScore(score + numberGrid[i][j])
-
+          j--;
         }
       }
     }
@@ -182,7 +183,7 @@ function App() {
           numberGrid[i][j] = numberGrid[i][j] + numberGrid[i][j + 1];
           numberGrid[i][j + 1] = 0;
           SetScore(score + numberGrid[i][j])
-
+          j--;
         }
       }
     }
@@ -198,7 +199,6 @@ function App() {
     for (let i = numberGrid.length - 1; i >= 0; i--) {
       for (let j = 1; j < 4; j++) {
         if (numberGrid[i][j] === 0) {
-          console.log(numberGrid[i][j - 1]);
 
           for (let k = j; k > 0; k--) {
             console.log(k - 1, `<-----------${k}`)
@@ -207,6 +207,7 @@ function App() {
             numberGrid[i][k - 1] = 0
             // break;
           }
+
           // numberGrid[numberGrid.length - 1][j] = 0;
         }
         else if (numberGrid[i][j] === numberGrid[i][j - 1]) {
@@ -214,7 +215,19 @@ function App() {
           numberGrid[i][j - 1] = 0;
           SetScore(score + numberGrid[i][j])
           console.log(numberGrid[i][j]);
-
+          j--;
+        }
+      }
+      // const temp = numberGrid[i].slice(0, j + 1)
+      // console.log(temp, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      const tempFilter = numberGrid[i].filter((item) => item)
+      let start = tempFilter.length - 1;
+      for (let j=numberGrid.length-1; j >= 0; j--) {
+        if (start >= 0) {
+          numberGrid[i][j] = tempFilter[start--]
+        }
+        else {
+          numberGrid[i][j] = 0;
         }
       }
     }
@@ -257,7 +270,7 @@ function App() {
     numberGrid = temp
     SetGrid(numberGrid)
     setMoves(0)
-    setHighScore(highScore<score?score:highScore)
+    setHighScore(highScore < score ? score : highScore)
     SetScore(0)
     let one = createData();
     let two = createData();
