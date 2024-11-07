@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 function App() {
 
-  const [Grid, SetGrid] = useState([
+  const [grid, setGrid] = useState([
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -17,7 +17,7 @@ function App() {
 
   const positiongrid = [14, 132, 250, 368]
 
-  let numberGrid = Grid
+  let numberGrid = grid
 
   const defaultlayout = (i) => {
     const temp = []
@@ -87,155 +87,177 @@ function App() {
     return temp;
   }
 
-  const createDataRandom = (positionChoosing) => {
-    return Math.floor(Math.random() * positionChoosing.length)
-  }
-
-  const createData = () => {
-    const positionChoosing = []
-
-    for (let i = 0; i < numberGrid.length; i++) {
-      for (let j = 0; j < numberGrid.length; j++) {
-        if (numberGrid[i][j] === 0)
-          positionChoosing.push(`${i} ${j}`)
-      }
-    }
-    let random;
-    let randomArray;
-    if (positionChoosing.length) {
-      random = positionChoosing[createDataRandom(positionChoosing)];
-      randomArray = random.split(" ")
-      randomArray[0] = Number(randomArray[0])
-      randomArray[1] = Number(randomArray[1])
-      return randomArray;
-    }
-    else {
-      alert("new Game")
-      newGame()
-    }
-
-  }
-
-  const upArrow = () => {
-    setMoves(moves + 1)
-    for (let i = 2; i >= 0; i--) {
-      for (let j = 0; j < numberGrid.length; j++) {
-        if (numberGrid[i][j] === 0) {
-          for (let k = i; k < 3; k++) {
-            numberGrid[k][j] = numberGrid[k + 1][j]
-            numberGrid[k + 1][j] = 0
-          }
-          // numberGrid[numberGrid.length - 1][j] = 0;
-        }
-        else if (numberGrid[i][j] === numberGrid[i + 1][j]) {
-          numberGrid[i][j] = numberGrid[i][j] + numberGrid[i + 1][j];
-          numberGrid[i + 1][j] = 0;
-          SetScore(score + numberGrid[i][j])
-          j--;
-        }
-      }
-    }
-    console.log(numberGrid);
-    const newOne = createData();
-    if (newOne)
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    SetGrid(numberGrid)
-  }
-
-  const downArrow = () => {
-    setMoves(moves + 1)
-    for (let i = 1; i <= 3; i++) {
-      for (let j = 0; j < numberGrid.length; j++) {
-        if (numberGrid[i][j] === 0) {
-          for (let k = i; k > 0; k--) {
-            numberGrid[k][j] = numberGrid[k - 1][j]
-            numberGrid[k - 1][j] = 0
-          }
-          // numberGrid[numberGrid.length - 1][j] = 0;
-        }
-        else if (numberGrid[i][j] === numberGrid[i - 1][j]) {
-          numberGrid[i][j] = numberGrid[i][j] + numberGrid[i - 1][j];
-          numberGrid[i - 1][j] = 0;
-          SetScore(score + numberGrid[i][j])
-          j--;
-        }
-      }
-    }
-    console.log(numberGrid);
-    const newOne = createData();
-    if (newOne)
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    SetGrid(numberGrid)
-  }
 
   const leftArrow = () => {
     setMoves(moves + 1)
-    for (let i = 0; i < numberGrid.length; i++) {
-      for (let j = 2; j >= 0; j--) {
-        if (numberGrid[i][j] === 0) {
-          for (let k = j; k < 3; k++) {
-            numberGrid[i][k] = numberGrid[i][k + 1]
-            numberGrid[i][k + 1] = 0
+
+    let tempscore = 0;
+    for (let i = 0; i < 4; i++) {
+
+      const filteredArray = numberGrid[i].filter(item => item)
+      for (let j = 0; j < filteredArray.length - 1; j++) {
+
+        if (filteredArray.length >= 1 && filteredArray[j] === filteredArray[j + 1]) {
+          filteredArray[j] += filteredArray[j + 1];
+          filteredArray[j + 1] = 0;
+          tempscore += filteredArray[j]
+          for (let k = j + 1; k < filteredArray.length - 1; k++) {
+            if (filteredArray[k] == 0) {
+              filteredArray[k] = filteredArray[k + 1];
+              filteredArray[k + 1] = 0
+            }
+
           }
-          // numberGrid[numberGrid.length - 1][j] = 0;
-        }
-        else if (numberGrid[i][j] === numberGrid[i][j + 1]) {
-          numberGrid[i][j] = numberGrid[i][j] + numberGrid[i][j + 1];
-          numberGrid[i][j + 1] = 0;
-          SetScore(score + numberGrid[i][j])
-          j--;
         }
       }
+
+      let count = 0
+      for (let index = 0; index < 4; index++) {
+        count < filteredArray.length ? numberGrid[i][index] = filteredArray[count++] : numberGrid[i][index] = 0
+      }
+
     }
-    console.log(numberGrid);
-    const newOne = createData();
-    if (newOne)
+    SetScore(score + tempscore)
+    console.log(grid, "<--------->", numberGrid, "<------------->", numberGrid === grid)
+    setGrid(numberGrid)
+    let newOne = createData();
+
+    if (newOne) {
       numberGrid[newOne[0]][newOne[1]] = 2;
-    SetGrid(numberGrid)
+    }
+    setGrid(numberGrid)
   }
 
   const rightArrow = () => {
     setMoves(moves + 1)
-    for (let i = numberGrid.length - 1; i >= 0; i--) {
-      for (let j = 1; j < 4; j++) {
-        if (numberGrid[i][j] === 0) {
+    let tempscore = 0;
+    for (let i = 0; i < 4; i++) {
 
-          for (let k = j; k > 0; k--) {
-            console.log(k - 1, `<-----------${k}`)
-            console.log(numberGrid[i][k], "------]", numberGrid[i][k - 1]);
-            numberGrid[i][k] = numberGrid[i][k - 1]
-            numberGrid[i][k - 1] = 0
-            // break;
+      const filteredArray = numberGrid[i].filter(item => item)
+
+      for (let j = filteredArray.length - 1; j > 0; j--) {
+        if (filteredArray.length >= 1 && filteredArray[j] === filteredArray[j - 1]) {
+          filteredArray[j] += filteredArray[j - 1];
+          filteredArray[j - 1] = 0;
+          tempscore += filteredArray[j]
+          for (let k = j - 1; k > 0; k--) {
+            if (filteredArray[k] == 0) {
+              filteredArray[k] = filteredArray[k - 1];
+              filteredArray[k - 1] = 0
+            }
+
           }
+        }
+      }
 
-          // numberGrid[numberGrid.length - 1][j] = 0;
-        }
-        else if (numberGrid[i][j] === numberGrid[i][j - 1]) {
-          numberGrid[i][j] = numberGrid[i][j] + numberGrid[i][j - 1];
-          numberGrid[i][j - 1] = 0;
-          SetScore(score + numberGrid[i][j])
-          console.log(numberGrid[i][j]);
-          j--;
-        }
+      let count = filteredArray.length - 1;
+      for (let index = 3; index >= 0; index--) {
+        count >= 0 ? numberGrid[i][index] = filteredArray[count--] : numberGrid[i][index] = 0
       }
-      // const temp = numberGrid[i].slice(0, j + 1)
-      // console.log(temp, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-      const tempFilter = numberGrid[i].filter((item) => item)
-      let start = tempFilter.length - 1;
-      for (let j=numberGrid.length-1; j >= 0; j--) {
-        if (start >= 0) {
-          numberGrid[i][j] = tempFilter[start--]
-        }
-        else {
-          numberGrid[i][j] = 0;
-        }
-      }
+
     }
-    console.log(numberGrid);
-    const newOne = createData();
-    if (newOne)
+    SetScore(score + tempscore)
+    setGrid(numberGrid)
+    let newOne = createData();
+    console.log("newone ========", newOne);
+
+    if (newOne) {
       numberGrid[newOne[0]][newOne[1]] = 2;
-    SetGrid(numberGrid)
+    }
+    setGrid(numberGrid)
+  }
+
+  const downArrow = () => {
+    setMoves(moves + 1)
+    let tempscore = 0;
+    for (let i = 0; i < 4; i++) {
+
+      const tempArray = [];
+
+      for (let j = 3; j >= 0; j--) {
+        tempArray.push(numberGrid[j][i])
+      }
+
+      const filteredArray = tempArray.filter(item => item)
+
+      for (let j = 0; j < filteredArray.length - 1; j++) {
+
+        if (filteredArray.length >= 1 && filteredArray[j] === filteredArray[j + 1]) {
+          filteredArray[j] += filteredArray[j + 1];
+          filteredArray[j + 1] = 0;
+          tempscore += filteredArray[j]
+          for (let k = j + 1; k < filteredArray.length - 1; k++) {
+            if (filteredArray[k] == 0) {
+              filteredArray[k] = filteredArray[k + 1];
+              filteredArray[k + 1] = 0
+            }
+
+          }
+        }
+      }
+
+      let count = 0;
+      for (let index = 3; index >= 0; index--) {
+        count < filteredArray.length ? numberGrid[index][i] = filteredArray[count++] : numberGrid[index][i] = 0
+      }
+
+    }
+    SetScore(score + tempscore)
+    setGrid(numberGrid)
+    let newOne = createData();
+
+    if (newOne) {
+      numberGrid[newOne[0]][newOne[1]] = 2;
+    }
+    setGrid(numberGrid)
+  }
+
+
+  const upArrow = () => {
+
+    setMoves(moves + 1)
+
+    let tempscore = 0;
+    for (let i = 0; i < 4; i++) {
+
+      const tempArray = [];
+
+      for (let j = 0; j < 4; j++) {
+        tempArray.push(numberGrid[j][i])
+      }
+
+      const filteredArray = tempArray.filter(item => item)
+
+      for (let j = 0; j < filteredArray.length - 1; j++) {
+
+        if (filteredArray.length >= 1 && filteredArray[j] === filteredArray[j + 1]) {
+          filteredArray[j] += filteredArray[j + 1];
+          filteredArray[j + 1] = 0;
+          tempscore += filteredArray[j]
+          for (let k = j + 1; k < filteredArray.length - 1; k++) {
+            if (filteredArray[k] == 0) {
+              filteredArray[k] = filteredArray[k + 1];
+              filteredArray[k + 1] = 0
+            }
+
+          }
+        }
+      }
+
+      let count = 0;
+      for (let index = 0; index < 4; index++) {
+        count < filteredArray.length ? numberGrid[index][i] = filteredArray[count++] : numberGrid[index][i] = 0
+      }
+
+    }
+    SetScore(score + tempscore)
+    setGrid(numberGrid)
+    let newOne = createData();
+
+    if (newOne) {
+      numberGrid[newOne[0]][newOne[1]] = 2;
+    }
+    setGrid(numberGrid)
   }
 
   document.onkeydown = function (event) {
@@ -259,16 +281,48 @@ function App() {
 
   }
 
+
+  const createDataRandom = (positionChoosing) => {
+    return Math.floor(Math.random() * positionChoosing.length)
+  }
+
+  const createData = () => {
+    const positionChoosing = []
+    // console.log(numberGrid)
+    for (let i = 0; i < numberGrid.length; i++) {
+      for (let j = 0; j < numberGrid.length; j++) {
+        if (numberGrid[i][j] === 0)
+          positionChoosing.push(`${i} ${j}`)
+      }
+    }
+    let random;
+    let randomArray;
+    console.log(positionChoosing);
+
+    if (positionChoosing.length) {
+      random = positionChoosing[createDataRandom(positionChoosing)];
+      randomArray = random.split(" ")
+      randomArray[0] = Number(randomArray[0])
+      randomArray[1] = Number(randomArray[1])
+      return randomArray;
+    }
+    else {
+      alert("new Game")
+      newGame()
+      return
+    }
+
+  }
+
+
   const newGame = () => {
-    const temp = [
+    const intialArray = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ]
-
-    numberGrid = temp
-    SetGrid(numberGrid)
+    numberGrid = intialArray;
     setMoves(0)
     setHighScore(highScore < score ? score : highScore)
     SetScore(0)
@@ -282,9 +336,10 @@ function App() {
         two[1] -= 1;
       }
     }
-    numberGrid[one[0]][one[1]] = 2
-    numberGrid[two[0]][two[1]] = 2
-    SetGrid(numberGrid)
+    intialArray[one[0]][one[1]] = 2
+    intialArray[two[0]][two[1]] = 2
+    setGrid([...intialArray]);
+    
   }
 
   useEffect(() => {
