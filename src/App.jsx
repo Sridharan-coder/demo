@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 
-import { Button, Grid2, Link, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { Button, Grid2, Link, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { LuUndo2 } from "react-icons/lu";
 import { IoRemoveOutline } from "react-icons/io5";
@@ -427,14 +427,15 @@ function App() {
           <Grid2 size={6.4}></Grid2>
           <Grid2 size={2.3}>
             <Link href="https://docs.google.com/forms/d/e/1FAIpQLScZldyVgauCIUTfGVlV90-7Za_6kYUSMGcaNmh6WGIfOAK_RA/
-            viewform?usp=pp_url&entry.1880902338=Using%20worker%3A%20true%0ARenderer%20initialized%20once%3A%20true%
-            0AWorker%20startup%20failed%3A%20false%0AResolution%3A%203%0AWeb%20worker%20supported%3A%20true%0AUser%
-            20agent%3A%20Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)
-            %20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0AWindow%20width%3A%201592%0AWindow%20height%3A%20921%0AScreen%
-            20width%3A%201600%0AScreen%20height%3A%201000%0ADevice%20pixel%20ratio%3A%202%0ACurrent%20URL%3A%20https%3A%2F%2Fplay2048
-            .co%2F%0ACookies%20enabled%3A%20true%0APlatform%3A%20Win32%0ABrowser%20version%3A%205.0%20(Windows%20NT%2010.
-            0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.
-            36%20Edg%2F130.0.0.0%0ABrowser%20vendor%3A%20Google%20Inc.%0ABrowser%20product%3A%20Gecko%0ADevice%20memory%3A%208"
+            viewform?entry.1880902338=Using%20worker%3A%20true%0ARenderer%20initialized%20once%3A%20true%0AWorker%
+            20startup%20failed%3A%20false%0AResolution%3A%203%0AWeb%20worker%20supported%3A%20true%0AUser%20agent%
+            3A%20Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%
+            20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0AWindow%20width%3A%201273%0AWindow%
+            20height%3A%20737%0AScreen%20width%3A%201600%0AScreen%20height%3A%201000%0ADevice%20pixel%20ratio%3A%
+            202.5%0ACurrent%20URL%3A%20https%3A%2F%2Fplay2048.co%2F%0ACookies%20enabled%3A%20true%0APlatform%3A%
+            20Win32%0ABrowser%20version%3A%205.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%
+            20(KHTML%2C%20like%20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0ABrowser%20vendor%
+            3A%20Google%20Inc.%0ABrowser%20product%3A%20Gecko%0ADevice%20memory%3A%208"
               underline='hover'
               color='inherit'
               fontSize={16}
@@ -466,22 +467,30 @@ function App() {
       </Grid2>
 
       <Grid2 container justifyContent={'center'} size={12}>
-        <Grid2 container justifyContent={'center'} className="footer" spacing={2}>
-          <Grid2 justifyContent={'center'}>
-            <Button variant="contained" className='footerButton' ><LuUndo2 size={28} /></Button>
-            <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
-          </Grid2>
-          <Grid2 justifyContent={'center'}>
-            <Button variant="contained" className='footerButton' ><RiSwap2Fill size={28} /></Button>
-            <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
-          </Grid2>
-          <Grid2 justifyContent={'center'}>
-            <Button variant="contained" className='footerButton' ><BsGridFill size={28} /></Button>
-            <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
-          </Grid2>
-          <Grid2 justifyContent={'center'} >
-            <Button variant="contained" className='footerButton' ><RiVipCrownFill size={28} /></Button>
-          </Grid2>
+      <Grid2 container justifyContent={'center'} className="footer" spacing={2}>
+          <Tooltip title="Make a 128 tile to get more uses" placement="top">
+            <Grid2 justifyContent={'center'}>
+              <Button variant="contained" className='footerButton' ><LuUndo2 size={28} /></Button>
+              <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
+            </Grid2>
+          </Tooltip>
+          <Tooltip title="Make a 256 tile to get more uses" placement="top">
+            <Grid2 justifyContent={'center'}>
+              <Button variant="contained" className='footerButton' ><RiSwap2Fill size={28} /></Button>
+              <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
+            </Grid2>
+          </Tooltip>
+          <Tooltip title="Make a 512 tile to get more uses" placement="top">
+            <Grid2 justifyContent={'center'}>
+              <Button variant="contained" className='footerButton' ><BsGridFill size={28} /></Button>
+              <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
+            </Grid2>
+          </Tooltip>
+          <Tooltip title="Add" placement="top">
+            <Grid2 justifyContent={'center'} >
+              <Button variant="contained" className='footerButton' ><RiVipCrownFill size={28} /></Button>
+            </Grid2>
+          </Tooltip>
         </Grid2>
       </Grid2>
 
