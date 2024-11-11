@@ -22,7 +22,6 @@ function App() {
   const [moves, setMoves] = useState(0)
   const [highScore, setHighScore] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null);
-  const [movedGrid, setMovedGrid] = useState([])
 
   const positiongrid = [14, 132, 250, 368]
   const open = Boolean(anchorEl);
