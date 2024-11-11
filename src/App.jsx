@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 
-import { Button, Grid2, Link, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Grid2, Link, Menu, MenuItem, Modal, Stack, Tooltip, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { LuUndo2 } from "react-icons/lu";
-import { IoRemoveOutline } from "react-icons/io5";
+import { IoRemoveOutline, IoStarOutline } from "react-icons/io5";
 import { RiSwap2Fill, RiVipCrownFill } from "react-icons/ri";
-import { BsGridFill } from "react-icons/bs";
+import { BsGridFill, BsFillGridFill } from "react-icons/bs";
+import { FaFlag } from "react-icons/fa";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   const [moves, setMoves] = useState(0)
   const [highScore, setHighScore] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null);
+  const [newGameModal, setNewGameModal] = useState(false)
 
   const positiongrid = [14, 132, 250, 368]
   const open = Boolean(anchorEl);
@@ -250,26 +252,26 @@ function App() {
 
           const numberGrid = leftArrow(grid);
 
-            setMoves(moves + 1)
-            let newOne = createData(numberGrid);
+          setMoves(moves + 1)
+          let newOne = createData(numberGrid);
 
-            if (newOne) {
-              numberGrid[newOne[0]][newOne[1]] = 2;
-            }
-            setGrid(numberGrid)
+          if (newOne) {
+            numberGrid[newOne[0]][newOne[1]] = 2;
+          }
+          setGrid(numberGrid)
           break;
         }
       case "ArrowUp":
         {
 
           const numberGrid = upArrow(grid);
-            setMoves(moves + 1)
-            let newOne = createData(numberGrid);
+          setMoves(moves + 1)
+          let newOne = createData(numberGrid);
 
-            if (newOne) {
-              numberGrid[newOne[0]][newOne[1]] = 2;
-            }
-            setGrid(numberGrid)
+          if (newOne) {
+            numberGrid[newOne[0]][newOne[1]] = 2;
+          }
+          setGrid(numberGrid)
           break;
         }
       case "ArrowRight":
@@ -277,13 +279,13 @@ function App() {
 
           const numberGrid = rightArrow(grid);
 
-            setMoves(moves + 1)
-            let newOne = createData(numberGrid);
+          setMoves(moves + 1)
+          let newOne = createData(numberGrid);
 
-            if (newOne) {
-              numberGrid[newOne[0]][newOne[1]] = 2;
-            }
-            setGrid(numberGrid)
+          if (newOne) {
+            numberGrid[newOne[0]][newOne[1]] = 2;
+          }
+          setGrid(numberGrid)
           break;
         }
       case "ArrowDown":
@@ -291,13 +293,13 @@ function App() {
 
           const numberGrid = downArrow(grid);
 
-            setMoves(moves + 1)
-            let newOne = createData(numberGrid);
+          setMoves(moves + 1)
+          let newOne = createData(numberGrid);
 
-            if (newOne) {
-              numberGrid[newOne[0]][newOne[1]] = 2;
-            }
-            setGrid(numberGrid)
+          if (newOne) {
+            numberGrid[newOne[0]][newOne[1]] = 2;
+          }
+          setGrid(numberGrid)
           break;
         }
       default:
@@ -330,7 +332,7 @@ function App() {
       return randomArray;
     }
     else {
-      alert(moves+" moves new Game")
+      alert(moves + " moves new Game")
       newGame()
     }
 
@@ -347,6 +349,7 @@ function App() {
     setMoves(0)
     setHighScore(highScore <= score ? score : highScore);
     SetScore(0)
+    setNewGameModal(false)
     let one = createData(intialArray);
     let two = createData(intialArray);
     if (one[1] === two[1] && one[0] === two[0]) {
@@ -379,10 +382,11 @@ function App() {
             onClick={handleClick}
             style={{ display: 'flex', alignItems: 'center', height: 43, color: 'rgb(135 114 89)', fontFamily: 'inherit' }}
           >
-            <MenuIcon /> <Typography gutterBottom marginTop={2} fontWeight={700} fontSize={"3rem"}>
+            <MenuIcon /> <Typography gutterBottom marginTop={2} fontWeight={700} fontSize={"3rem"} paddingLeft={2}>
               2048
             </Typography>
           </Button>
+          <Box bgcolor={"rgb(224 218 209)"}>
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
@@ -391,15 +395,47 @@ function App() {
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}
-            defaultChecked={1}
+            
+            // bgcolor={}
           >
-            <MenuItem onClick={handleClose} key={1}>Standard</MenuItem>
-            <MenuItem onClick={handleClose}>Classic</MenuItem>
-            <MenuItem onClick={handleClose}>Tutorial</MenuItem>
+            <MenuItem onClick={handleClose} key={1} className='standard'>
+              <Grid2 container flexDirection={'column'}>
+                <Grid2>
+                  <Typography ><IoStarOutline /> Standard</Typography>
+                </Grid2>
+                <Grid2>
+                  <Typography marginLeft={3}>2048 with powerups</Typography>
+                </Grid2>
+              </Grid2>
+
+            </MenuItem>
+
+            <MenuItem onClick={handleClose} key={2} className='standard'>
+              <Grid2 container flexDirection={'column'}>
+                <Grid2>
+                  <Typography ><BsFillGridFill /> Classic</Typography>
+                </Grid2>
+                <Grid2>
+                  <Typography marginLeft={3}>The original 2048, no undo</Typography>
+                </Grid2>
+              </Grid2>
+            </MenuItem>
+            <MenuItem onClick={handleClose} key={3} className='standard'>
+              <Grid2 container flexDirection={'column'}>
+                <Grid2>
+                  <Typography ><FaFlag /> Tutorial</Typography>
+                </Grid2>
+                <Grid2>
+                  <Typography marginLeft={3}>Learn how to play 2048</Typography>
+                </Grid2>
+              </Grid2>
+            </MenuItem>
+
           </Menu>
+          </Box>
         </Grid2>
         <Grid2 container justifyContent={'flex-start'} size={2} >
-          <Grid2 size={2.8}></Grid2>
+          <Grid2 size={1}></Grid2>
           <Grid2 container alignContent={'center'} direction={'column'} size={4} className="scoreBoard" borderRadius={3}>
             <Grid2 textAlign={'center'} className="boardName">
               SCORE
@@ -422,16 +458,16 @@ function App() {
         <Grid2 container alignItems={'center'} size={5}>
           <Grid2 size={6.4}></Grid2>
           <Grid2 size={2.3}>
-            <Link href="https://docs.google.com/forms/d/e/1FAIpQLScZldyVgauCIUTfGVlV90-7Za_6kYUSMGcaNmh6WGIfOAK_RA/
-            viewform?entry.1880902338=Using%20worker%3A%20true%0ARenderer%20initialized%20once%3A%20true%0AWorker%
+            <Link href="https://docs.google.com/forms/d/e/1FAIpQLScZldyVgauCIUTfGVlV90-7Za_6kYUSMGcaNmh6WGIfOAK_RA
+            /viewform?entry.1880902338=Using%20worker%3A%20true%0ARenderer%20initialized%20once%3A%20true%0AWorker%
             20startup%20failed%3A%20false%0AResolution%3A%203%0AWeb%20worker%20supported%3A%20true%0AUser%20agent%
             3A%20Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%
-            20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0AWindow%20width%3A%201273%0AWindow%
-            20height%3A%20737%0AScreen%20width%3A%201600%0AScreen%20height%3A%201000%0ADevice%20pixel%20ratio%3A%
-            202.5%0ACurrent%20URL%3A%20https%3A%2F%2Fplay2048.co%2F%0ACookies%20enabled%3A%20true%0APlatform%3A%
-            20Win32%0ABrowser%20version%3A%205.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%
-            20(KHTML%2C%20like%20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0ABrowser%20vendor%
-            3A%20Google%20Inc.%0ABrowser%20product%3A%20Gecko%0ADevice%20memory%3A%208"
+            20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0AWindow%20width%3A%201592%0AWindow%
+            20height%3A%20921%0AScreen%20width%3A%201600%0AScreen%20height%3A%201000%0ADevice%20pixel%20ratio%3A%202%
+            0ACurrent%20URL%3A%20https%3A%2F%2Fplay2048.co%2F%0ACookies%20enabled%3A%20true%0APlatform%3A%20Win32%
+            0ABrowser%20version%3A%205.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%
+            2C%20like%20Gecko)%20Chrome%2F130.0.0.0%20Safari%2F537.36%20Edg%2F130.0.0.0%0ABrowser%20vendor%3A%20Google%
+            20Inc.%0ABrowser%20product%3A%20Gecko%0ADevice%20memory%3A%208"
               underline='hover'
               color='inherit'
               fontSize={16}
@@ -441,14 +477,50 @@ function App() {
           </Grid2>
           <Grid2 size={3}>
             <Stack spacing={2.1} >
-              <Button variant="contained" className='newGameButton' onClick={() => newGame()}>New Game</Button>
+              <Button variant="contained" className='newGameButton' onClick={() => setNewGameModal(true)}>New Game</Button>
             </Stack>
+            <Modal
+              open={newGameModal}
+              onClose={() => setNewGameModal(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              style={{ border: "0px solid" }}
+            >
+              <Box sx={
+                {
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 400,
+                  bgcolor: 'rgb(234 231 217 )',
+                  borderRadius: 9,
+                  border: '0px solid white',
+                  boxShadow: 24,
+                  p: 4,
+                }
+              }>
+                <Typography variant="h4" component="h2" align={'center'} color='rgb(135 114 89)' fontWeight={700}>
+                  New Game
+                </Typography>
+                <Typography sx={{ mt: 2 }} align='center'>
+                  Are you sure you want to start a new game?
+                </Typography>
+
+                <Grid2 size={10} marginTop={5}>
+                  <Button variant="contained" className='newGameButton' fullWidth onClick={() => newGame()}>Start New Game</Button>
+                </Grid2>
+                <Grid2 size={10} marginTop={2}>
+                  <Button variant="outlined" style={{ border: "1px solid rgb(135 114 89)" }} onClick={() => setNewGameModal(false)} fullWidth color='rgb(135 114 89)'>Cancel</Button>
+                </Grid2>
+              </Box>
+            </Modal>
           </Grid2>
           <Grid2 size={0.2}></Grid2>
         </Grid2>
       </Grid2>
 
-      <Grid2 container justifyContent={'center'} size={12} marginTop={4}>
+      <Grid2 container justifyContent={'center'} size={12} marginTop={8}>
         <Grid2 size={5.4} justifyContent={'center'}>
           <svg width={576} height={530} viewBox='0 0 376 610' xmlns="http://www.w3.org/2000/svg" >
             <g>
@@ -460,27 +532,27 @@ function App() {
         </Grid2>
       </Grid2>
 
-      <Grid2 container justifyContent={'center'} size={12}>
-      <Grid2 container justifyContent={'center'} className="footer" spacing={2}>
-          <Tooltip title="Make a 128 tile to get more uses" placement="top">
+      <Grid2 container justifyContent={'center'} size={12} marginTop={5} marginRight={5}>
+        <Grid2 container justifyContent={'center'} className="footer" spacing={2}>
+          <Tooltip title={<><b>UNDO</b>   0 use left<br />Make a 128 tile to get more uses</>} placement="top" className='tooltipFonts'>
             <Grid2 justifyContent={'center'}>
               <Button variant="contained" className='footerButton' ><LuUndo2 size={28} /></Button>
               <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
             </Grid2>
           </Tooltip>
-          <Tooltip title="Make a 256 tile to get more uses" placement="top">
+          <Tooltip title={<><b>SWAP TWO TILES</b> 0 use left<br />Make a 256 tile to get more uses</>} placement="top" className='tooltipFonts'>
             <Grid2 justifyContent={'center'}>
               <Button variant="contained" className='footerButton' ><RiSwap2Fill size={28} /></Button>
               <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
             </Grid2>
           </Tooltip>
-          <Tooltip title="Make a 512 tile to get more uses" placement="top">
+          <Tooltip title={<><b>DELETE TILES BY NUMBER</b> 0 use left<br />Make a 512 tile to get more uses</>} placement="top" className='tooltipFonts'>
             <Grid2 justifyContent={'center'}>
               <Button variant="contained" className='footerButton' ><BsGridFill size={28} /></Button>
               <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
             </Grid2>
           </Tooltip>
-          <Tooltip title="Add premium" placement="top">
+          <Tooltip title={<><b>NEED MORE POERUPS?</b><br />Play <b>2048 Plus</b> to get bonus powerups!<br />Only with Self Prime.</>} placement="top" className='tooltipFonts'>
             <Grid2 justifyContent={'center'} >
               <Button variant="contained" className='footerButton' ><RiVipCrownFill size={28} /></Button>
             </Grid2>
@@ -489,7 +561,7 @@ function App() {
       </Grid2>
 
       <Grid2 container justifyContent={'center'} size={12} marginTop={3}>
-        <Typography fontSize={14}>play2048.co © 2014—2024 Gabriele Cirulli. All rights reserved.</Typography>
+        <Typography fontSize={14}>2048-self-game.com © 2024 Sridharan Coder. All rights reserved.</Typography>
       </Grid2>
 
     </>
