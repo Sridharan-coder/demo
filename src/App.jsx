@@ -249,7 +249,6 @@ function App() {
         {
 
           const numberGrid = leftArrow(grid);
-            setMovedGrid([numberGrid])
 
             setMoves(moves + 1)
             let newOne = createData(numberGrid);
@@ -264,7 +263,6 @@ function App() {
         {
 
           const numberGrid = upArrow(grid);
-            setMovedGrid([numberGrid])
             setMoves(moves + 1)
             let newOne = createData(numberGrid);
 
@@ -278,7 +276,6 @@ function App() {
         {
 
           const numberGrid = rightArrow(grid);
-            setMovedGrid([numberGrid])
 
             setMoves(moves + 1)
             let newOne = createData(numberGrid);
@@ -293,7 +290,6 @@ function App() {
         {
 
           const numberGrid = downArrow(grid);
-            setMovedGrid([numberGrid])
 
             setMoves(moves + 1)
             let newOne = createData(numberGrid);
@@ -364,7 +360,6 @@ function App() {
     intialArray[one[0]][one[1]] = 2
     intialArray[two[0]][two[1]] = 2
     setGrid([...intialArray]);
-    setMovedGrid([intialArray])
   }
 
   useEffect(() => {
