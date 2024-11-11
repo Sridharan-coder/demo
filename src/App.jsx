@@ -22,11 +22,9 @@ function App() {
   const [moves, setMoves] = useState(0)
   const [highScore, setHighScore] = useState(0)
   const [anchorEl, setAnchorEl] = useState(null);
+  const [movedGrid, setMovedGrid] = useState([])
 
   const positiongrid = [14, 132, 250, 368]
-
-  let numberGrid = grid
-
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -76,17 +74,17 @@ function App() {
     }
 
     let startRow = 14;
-    for (let j = 0; j < numberGrid.length; j++) {
+    for (let j = 0; j < grid.length; j++) {
       let numberXAlign = startRow;
-      if (Math.floor(numberGrid[i][j] / 10) === 0)
+      if (Math.floor(grid[i][j] / 10) === 0)
         numberXAlign += singleX;
-      else if (Math.floor(numberGrid[i][j] / 100) === 0)
+      else if (Math.floor(grid[i][j] / 100) === 0)
         numberXAlign += doubleX;
-      else if (Math.floor(numberGrid[i][j] / 1000) === 0)
+      else if (Math.floor(grid[i][j] / 1000) === 0)
         numberXAlign += tribleX;
-      else if (Math.floor(numberGrid[i][j] / 10000) === 0)
+      else if (Math.floor(grid[i][j] / 10000) === 0)
         numberXAlign += quadrupleX;
-      else if (Math.floor(numberGrid[i][j] / 100000) === 0)
+      else if (Math.floor(grid[i][j] / 100000) === 0)
         numberXAlign += quintupleX;
       else
         numberXAlign += quintupleX;
@@ -94,8 +92,8 @@ function App() {
       temp.push(
         <g key={`dynamicposition=${startColumn}-${startRow}`}>
           <>
-            <rect x={startRow} y={startColumn} width="108" height="108" rx="10" fill={numberGrid[i][j] ? boxColor[numberGrid[i][j]] : "#BAAC9A"} />
-            <text x={numberXAlign} y={startColumn + y} style={{ fontSize: 39, fontWeight: 500 }} ><tspan fill='rgb(135 114 89)' style={{ fontWeight: 'bold' }}>{numberGrid[i][j] || ""}</tspan></text>
+            <rect x={startRow} y={startColumn} width="108" height="108" rx="10" fill={grid[i][j] ? boxColor[grid[i][j]] : "#BAAC9A"} />
+            <text x={numberXAlign} y={startColumn + y} style={{ fontSize: 39, fontWeight: 500 }} ><tspan fill='rgb(135 114 89)' style={{ fontWeight: 'bold' }}>{grid[i][j] || ""}</tspan></text>
           </>
         </g>
       )
@@ -104,8 +102,7 @@ function App() {
     return temp;
   }
 
-  const leftArrow = () => {
-    setMoves(moves + 1)
+  const leftArrow = (numberGrid) => {
 
     let tempscore = 0;
     for (let i = 0; i < 4; i++) {
@@ -134,18 +131,12 @@ function App() {
 
     }
     SetScore(score + tempscore)
-    console.log(grid, "<--------->", numberGrid, "<------------->", numberGrid === grid)
-    setGrid(numberGrid)
-    let newOne = createData();
 
-    if (newOne) {
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    }
-    setGrid(numberGrid)
+    return numberGrid;
+
   }
 
-  const rightArrow = () => {
-    setMoves(moves + 1)
+  const rightArrow = (numberGrid) => {
     let tempscore = 0;
     for (let i = 0; i < 4; i++) {
 
@@ -173,18 +164,10 @@ function App() {
 
     }
     SetScore(score + tempscore)
-    setGrid(numberGrid)
-    let newOne = createData();
-    console.log("newone ========", newOne);
-
-    if (newOne) {
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    }
-    setGrid(numberGrid)
+    return numberGrid;
   }
 
-  const downArrow = () => {
-    setMoves(moves + 1)
+  const downArrow = (numberGrid) => {
     let tempscore = 0;
     for (let i = 0; i < 4; i++) {
 
@@ -219,18 +202,10 @@ function App() {
 
     }
     SetScore(score + tempscore)
-    setGrid(numberGrid)
-    let newOne = createData();
-
-    if (newOne) {
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    }
-    setGrid(numberGrid)
+    return numberGrid;
   }
 
-  const upArrow = () => {
-
-    setMoves(moves + 1)
+  const upArrow = (numberGrid) => {
 
     let tempscore = 0;
     for (let i = 0; i < 4; i++) {
@@ -266,30 +241,70 @@ function App() {
 
     }
     SetScore(score + tempscore)
-    setGrid(numberGrid)
-    let newOne = createData();
-
-    if (newOne) {
-      numberGrid[newOne[0]][newOne[1]] = 2;
-    }
-    setGrid(numberGrid)
+    return numberGrid;
   }
 
   document.onkeydown = function (event) {
-    console.log(event.key);
     switch (event.key) {
       case "ArrowLeft":
-        leftArrow()
-        break;
+        {
+
+          const numberGrid = leftArrow(grid);
+            setMovedGrid([numberGrid])
+
+            setMoves(moves + 1)
+            let newOne = createData(numberGrid);
+
+            if (newOne) {
+              numberGrid[newOne[0]][newOne[1]] = 2;
+            }
+            setGrid(numberGrid)
+          break;
+        }
       case "ArrowUp":
-        upArrow()
-        break;
+        {
+
+          const numberGrid = upArrow(grid);
+            setMovedGrid([numberGrid])
+            setMoves(moves + 1)
+            let newOne = createData(numberGrid);
+
+            if (newOne) {
+              numberGrid[newOne[0]][newOne[1]] = 2;
+            }
+            setGrid(numberGrid)
+          break;
+        }
       case "ArrowRight":
-        rightArrow();
-        break;
+        {
+
+          const numberGrid = rightArrow(grid);
+            setMovedGrid([numberGrid])
+
+            setMoves(moves + 1)
+            let newOne = createData(numberGrid);
+
+            if (newOne) {
+              numberGrid[newOne[0]][newOne[1]] = 2;
+            }
+            setGrid(numberGrid)
+          break;
+        }
       case "ArrowDown":
-        downArrow();
-        break;
+        {
+
+          const numberGrid = downArrow(grid);
+            setMovedGrid([numberGrid])
+
+            setMoves(moves + 1)
+            let newOne = createData(numberGrid);
+
+            if (newOne) {
+              numberGrid[newOne[0]][newOne[1]] = 2;
+            }
+            setGrid(numberGrid)
+          break;
+        }
       default:
         break;
     }
@@ -301,9 +316,8 @@ function App() {
     return Math.floor(Math.random() * positionChoosing.length)
   }
 
-  const createData = () => {
+  const createData = (numberGrid) => {
     const positionChoosing = []
-    // console.log(numberGrid)
     for (let i = 0; i < numberGrid.length; i++) {
       for (let j = 0; j < numberGrid.length; j++) {
         if (numberGrid[i][j] === 0)
@@ -312,7 +326,6 @@ function App() {
     }
     let random;
     let randomArray;
-    // console.log(positionChoosing);
 
     if (positionChoosing.length) {
       random = positionChoosing[createDataRandom(positionChoosing)];
@@ -322,33 +335,25 @@ function App() {
       return randomArray;
     }
     else {
-      alert("new Game")
+      alert(moves+" moves new Game")
       newGame()
-
     }
 
   }
 
-
   const newGame = () => {
-    console.log("ko");
-
     const intialArray = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ]
-    console.log(intialArray);
 
-    // setTimeout(() => {
-    numberGrid = intialArray;
     setMoves(0)
-    console.log(highScore);
     setHighScore(highScore <= score ? score : highScore);
     SetScore(0)
-    let one = createData();
-    let two = createData();
+    let one = createData(intialArray);
+    let two = createData(intialArray);
     if (one[1] === two[1] && one[0] === two[0]) {
       if (two[1] <= 2) {
         two[1] += 1;
@@ -360,10 +365,7 @@ function App() {
     intialArray[one[0]][one[1]] = 2
     intialArray[two[0]][two[1]] = 2
     setGrid([...intialArray]);
-    console.log(intialArray);
-    // }, 3000)
-
-
+    setMovedGrid([intialArray])
   }
 
   useEffect(() => {
@@ -449,8 +451,6 @@ function App() {
             </Stack>
           </Grid2>
           <Grid2 size={0.2}></Grid2>
-
-
         </Grid2>
       </Grid2>
 
@@ -486,7 +486,7 @@ function App() {
               <Typography ><IoRemoveOutline size={30} /><IoRemoveOutline size={30} /></Typography>
             </Grid2>
           </Tooltip>
-          <Tooltip title="Add" placement="top">
+          <Tooltip title="Add premium" placement="top">
             <Grid2 justifyContent={'center'} >
               <Button variant="contained" className='footerButton' ><RiVipCrownFill size={28} /></Button>
             </Grid2>
@@ -496,7 +496,6 @@ function App() {
 
       <Grid2 container justifyContent={'center'} size={12} marginTop={3}>
         <Typography fontSize={14}>play2048.co © 2014—2024 Gabriele Cirulli. All rights reserved.</Typography>
-
       </Grid2>
 
     </>
